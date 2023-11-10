@@ -3,23 +3,18 @@ services:
   prometheus:
     image: mbasri/prometheus:latest
     container_name: prometheus
-    environment:
-      - VAR1=a
     ports:
       - 9090:9090
     volumes:
-      - $PWD/data:/var/lib/influxdb2
+      - $PWD/files.d/prometheus:/prometheus
+      - $PWD/files.d/etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     restart: unless-stopped
 
   influxdb-backup:
     image: mbasri/node-exporter:latest
-    container_name: influxdb-backup
-    environment:
-      - VAR1=a
+    container_name: node-exporter
     ports:
       - 9100:9100
-    volumes:
-      - $PWD/backup:/data/backup
 
     restart: unless-stopped
   

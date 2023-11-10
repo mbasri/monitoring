@@ -1,16 +1,21 @@
-# sensorgraph/nginx
+# Monitoring Stack
 
-* Prometheus
- ![Docker Pulls](https://img.shields.io/docker/pulls/mbasri/prometheus.svg)
- ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/mbasri/prometheus)
+**Prometheus**
 
-* Node Exporter
- ![Docker Pulls](https://img.shields.io/docker/pulls/mbasri/node-exporter.svg)
- ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/mbasri/node-exporter)
+![Prometheus Docker Pulls](https://img.shields.io/docker/pulls/mbasri/prometheus.svg)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/mbasri/prometheus)
+
+**Node Exporter**
+
+![Docker Pulls](https://img.shields.io/docker/pulls/mbasri/node-exporter.svg)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/mbasri/node-exporter)
 
 **A docker images to run Monitoring Stack.**
 
-> * Docker base image: [https://hub.docker.com/_/nginx](https://hub.docker.com/_/nginx)
+> * Docker base images:
+>
+>   * [https://hub.docker.com/r/prom/prometheus](https://hub.docker.com/r/prom/prometheus)
+>   * [https://hub.docker.com/r/prom/node-exporter](https://hub.docker.com/r/prom/node-exporter)
 
 ## Prerequisites
 
@@ -18,7 +23,7 @@
 
 ## Usage
 
-###  Build a new image
+###  Build a new images
 
 ```bash
 git clone https://gitlab.com/mbasri/monitoring.git monitoring
@@ -33,19 +38,17 @@ cd monitoring/docker
 #### Quickstart
 
 ```bash
-docker run -p 80:80 sensorgraph/nginx:latest
-# Go to http://localhost:80 and start the configuration
+docker run -p 9090:9090 mbasri/prometheus:latest
+# Go to http://localhost:9090 and start the configuration
 ```
 
-#### Automated Setup
+#### With custom config file
 
 ```bash
-docker run -p 80:80 \
-  -v $PWD/files.d/etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf \
-  -v $PWD/files.d/etc/nginx/.htpasswd:/etc/nginx/.htpasswd \
-  -v $PWD/files.d/etc/ssl/certs/nginx.crt:/etc/ssl/certs/nginx.crt \
-  -v $PWD/files.d/etc/ssl/private/nginx.key:/etc/ssl/private/nginx.key \
-  nginx:latest
+docker run -p 9090:9090 \
+  -v $PWD/files.d/etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+  -v $PWD/files.d/prometheus:/prometheus \
+  mbasri/prometheus:latest
 ```
 
 ###  Run via docker-compose
@@ -69,10 +72,10 @@ docker-compose up -d
 ## Volumes
 
 * Prometheus
-  * /var/lib
+  * /prometheus
+  * /etc/prometheus/prometheus.yml
 
 * Node Exporter
-  * /var/lib
 
 ## Ports
 
