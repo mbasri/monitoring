@@ -9,7 +9,7 @@ services:
 before_script:
   - docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD" $DOCKER_REGISTRY
 
-docker:build:only-master:prometheus:
+docker:build:only-main:prometheus:
   stage: build
   script:
     - docker build -t index.docker.io/mbasri/prometheus:latest docker/prometheus
@@ -17,9 +17,9 @@ docker:build:only-master:prometheus:
     - docker push index.docker.io/mbasri/prometheus:latest
     - docker push index.docker.io/mbasri/prometheus:${CI_COMMIT_SHORT_SHA}
   only:
-    - master
+    - main
 
-docker:build:only-master:node-exporter:
+docker:build:only-main:node-exporter:
   stage: build
   script:
     - docker build -t index.docker.io/mbasri/node-exporter:latest docker/node-exporter
@@ -27,20 +27,20 @@ docker:build:only-master:node-exporter:
     - docker push index.docker.io/mbasri/node-exporter:latest
     - docker push index.docker.io/mbasri/node-exporter:${CI_COMMIT_SHORT_SHA}
   only:
-    - master
+    - main
 
-docker:build:except-master:prometheus:
+docker:build:except-main:prometheus:
   stage: build
   script:
     - docker build -t index.docker.io/mbasri/prometheus:${CI_COMMIT_SHORT_SHA} docker/prometheus
     - docker push index.docker.io/mbasri/prometheus:${CI_COMMIT_SHORT_SHA}
   except:
-    - master
+    - main
 
-docker:build:except-master:node-exporter:
+docker:build:except-main:node-exporter:
   stage: build
   script:
     - docker build -t index.docker.io/mbasri/node-exporter:${CI_COMMIT_SHORT_SHA} docker/node-exporter
     - docker push index.docker.io/mbasri/node-exporter:${CI_COMMIT_SHORT_SHA}
   except:
-    - master
+    - main
