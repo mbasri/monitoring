@@ -1,0 +1,5 @@
+# MacOS files
+.DS_Store
+
+# Custom config
+docker-compose/files.d/*
