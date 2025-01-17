@@ -26,7 +26,7 @@
 ###  Build a new images
 
 ```bash
-git clone https://gitlab.com/mbasri/monitoring.git monitoring
+git clone https://github.com/mbasri/monitoring.git monitoring
 cd monitoring/docker
 ./build
 ```
@@ -54,7 +54,7 @@ docker run -p 9090:9090 \
 ###  Run via docker-compose
 
 ```bash
-git clone https://gitlab.com/mbasri/monitoring.git monitoring
+git clone https://github.com/mbasri/monitoring.git monitoring
 cd monitoring/docker-compose
 docker-compose up -d
 ```
@@ -87,7 +87,7 @@ docker-compose up -d
 
 ## Author
 
-* [**Mohamed BASRI**](https://gitlab.com/mbasri)
+* [**Mohamed BASRI**](https://github.com/mbasri)
 
 ## License
 
