@@ -8,12 +8,11 @@ on:
   workflow_dispatch:
     branches: [ main, dev ]
 
-
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Build
-      run: echo "toto"
+      run: echo "Build"
