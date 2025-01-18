@@ -1,6 +1,6 @@
 # Monitoring Stack
 
-[![Main](https://github.com/mbasri/monitoring/actions/workflows/mail.yml/badge.svg)](https://github.com/mbasri/monitoring/actions/workflows/mail.yml)
+[![Main](https://github.com/mbasri/monitoring/actions/workflows/main.yml/badge.svg)](https://github.com/mbasri/monitoring/actions/workflows/main.yml)
 
 **Prometheus**
 
