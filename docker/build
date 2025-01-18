@@ -9,19 +9,17 @@
 
 VERSION=${1:-latest}
 
-docker login
+docker login ghcr.io
 
 for docker_image in "prometheus" "node-exporter"
 do
-  REPOSITORY="mbasri/${docker_image}:${VERSION}"
+  REPOSITORY="ghcr.io/mbasri/${docker_image}"
   if [ "${?}" -eq 0 ]; then
-    docker build -t ${REPOSITORY} ${docker_image}
-    docker push ${REPOSITORY}
+    docker build -t ${REPOSITORY}:${VERSION} ${docker_image}
+    docker push ${REPOSITORY}:${VERSION}
     if [ "${?}" -eq 0 ]; then
-      VERSION="latest"
-      REPOSITORY_LATEST="mbasri/${docker_image}:${VERSION}"
-      docker tag ${REPOSITORY} ${REPOSITORY_LATEST}
-      docker push ${REPOSITORY_LATEST}
+      docker tag ${REPOSITORY} ${REPOSITORY}:latest
+      docker push ${REPOSITORY}:latest
     fi
   else
     echo -n "Login failed, exiting"
