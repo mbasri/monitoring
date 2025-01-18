@@ -7,6 +7,11 @@ on:
     branches: [ main ]
   workflow_dispatch:
     branches: [ main, dev ]
+    inputs:
+      description:
+        description: 'Description of the build'
+        required: true
+        default: ''
 
 jobs:
   build:
@@ -16,3 +21,5 @@ jobs:
       uses: actions/checkout@v4
     - name: Build
       run: echo "Build"
+    - name: Build
+      run: echo {{ github.event.inputs.description }}
