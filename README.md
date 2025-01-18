@@ -1,5 +1,7 @@
 # Monitoring Stack
 
+[![Main](https://github.com/mbasri/monitoring/actions/workflows/mail.yml/badge.svg)](https://github.com/mbasri/monitoring/actions/workflows/mail.yml)
+
 **Prometheus**
 
 ![Prometheus Docker Pulls](https://img.shields.io/docker/pulls/mbasri/prometheus.svg)
