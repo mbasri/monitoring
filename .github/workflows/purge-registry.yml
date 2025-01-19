@@ -27,8 +27,8 @@ jobs:
         package-name: ${{ env.PROMETHEUS_PACKAGE_NAME }}
         package-type: 'container'
         token: ${{ secrets.GITHUB_TOKEN }}
-        min-versions-to-keep: 0
-        delete-only-untagged-versions: 'true'
+        min-versions-to-keep: 1
+        delete-only-untagged-versions: false
 
   purge-node-exporter-registry:
     runs-on: ubuntu-latest
@@ -47,4 +47,4 @@ jobs:
         package-type: 'container'
         token: ${{ secrets.GITHUB_TOKEN }}
         min-versions-to-keep: 0
-        delete-only-untagged-versions: 'true'
+        delete-only-untagged-versions: false
