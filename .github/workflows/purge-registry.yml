@@ -10,7 +10,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
-    - uses: actions/delete-package-versions@v5.0.0
+    - uses: actions/delete-package-versions@v5
       with: 
         package-name: 'mbasri/prometheus'
         package-type: 'container'
@@ -23,7 +23,7 @@ jobs:
       outputs:
         version: ${{ steps.version.outputs.version }}
       steps:
-      - uses: actions/delete-package-versions@v5.0.0
+      - uses: actions/delete-package-versions@v5
         with: 
           package-name: 'mbasri/node-exporter'
           package-type: 'container'
