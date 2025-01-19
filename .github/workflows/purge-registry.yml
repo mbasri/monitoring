@@ -17,7 +17,8 @@ jobs:
     steps:
     - uses: actions/delete-package-versions@main
       with: 
-        package-name: '${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}'
+        #package-name: '${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}'
+        package-name: 'prometheus'
         package-type: 'container'
         token: ${{ secrets.GITHUB_TOKEN }}
         min-versions-to-keep: 0
@@ -31,7 +32,8 @@ jobs:
       steps:
       - uses: actions/delete-package-versions@main
         with: 
-          package-name: '${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}'
+          #package-name: '${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}'
+          package-name: 'node-exporter'
           package-type: 'container'
           token: ${{ secrets.GITHUB_TOKEN }}
           min-versions-to-keep: 0
