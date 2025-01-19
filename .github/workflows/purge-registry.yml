@@ -1,12 +1,14 @@
 name: 'Purge registry'
 
 on:
+  shcedule:
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 env:
   REGISTRY: 'ghcr.io'
-  PROMETHEUS_IMAGE_NAME: 'mbasri/prometheus'
-  NODE_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
+  PROMETHEUS_PACKAGE_NAME: 'prometheus'
+  NODE_EXPORTER_PACKAGE_NAME: 'node-exporter'
   
 jobs:
   purge-prometheus-registry:
@@ -22,7 +24,7 @@ jobs:
     - uses: actions/delete-package-versions@main
       with: 
         #package-name: '${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}'
-        package-name: 'prometheus'
+        package-name: ${{ env.PROMETHEUS_PACKAGE_NAME }}
         package-type: 'container'
         token: ${{ secrets.GITHUB_TOKEN }}
         min-versions-to-keep: 0
@@ -41,7 +43,7 @@ jobs:
     - uses: actions/delete-package-versions@main
       with: 
         #package-name: '${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}'
-        package-name: 'node-exporter'
+        package-name: ${{ env.NODE_EXPORTER_PACKAGE_NAME }}
         package-type: 'container'
         token: ${{ secrets.GITHUB_TOKEN }}
         min-versions-to-keep: 0
