@@ -54,13 +54,13 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Install Cosign
-      uses: sigstore/cosign-installer@v3.7.0
+      uses: sigstore/cosign-installer@main
 
     - name: Set up QEMU
-      uses: docker/setup-qemu-action@v3.3.0
+      uses: docker/setup-qemu-action@master
 
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3.8.0
+      uses: docker/setup-buildx-action@master
     
     - name: Build Prometheus image
       run: |
