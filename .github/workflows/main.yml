@@ -14,24 +14,32 @@ on:
         default: ''
 env:
   CONTAINER_REGISTRY: 'ghcr.io'
+  
   LATEST_TAG: 'latest'
+  
   PROMETHEUS_DIRECTORY: 'docker/prometheus'
-  NODE_EXPORTER_DIRECTORY: 'docker/node-exporter'
-  
-  
+  PROMETHEUS_IMAGE_NAME: 'mbasri/prometheus'
 
+  NODE_EXPORTER_DIRECTORY: 'docker/node-exporter'
+  Node_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
+  
 jobs:
   generate-date-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
     - name: Generate date version
       id: version
-      run: echo "$(date +'%Y%m%d%H%M%S')"
+      run: echo "version=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
   generate-commit-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.versio,n.outputs.version }}
     steps:
     - name: Generate commit version
-      run: echo "${{ github.sha }}"
+      id: version
+      run: echo "version=${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
   build-prometheus:
     runs-on: ubuntu-latest
@@ -40,7 +48,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Build Prometheus Docker image
-      run: docker buil
+      run: docker build -t ${var.PROMETHEUS_IMAGE_NAME}:${needs.generate-date-version.outputs.version} ${var.PROMETHEUS_DIRECTORY}
+      docker build -t ${REPOSITORY}:${VERSION} ${docker_image}
     #- name: Build 
     #  run: echo ${{ github.event.inputs.description }}
   scan-prometheus:
