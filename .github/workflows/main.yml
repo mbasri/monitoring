@@ -73,12 +73,23 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}
     
-    - name: Build Prometheus image
-      run: |
-        docker build \
-          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }} \
-          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ env.COMMIT_SHA }}\
-          ${{ env.PROMETHEUS_DIRECTORY }}
+    - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@master
+        with:
+          context: ${{ env.PROMETHEUS_DIRECTORY }}
+          # push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+    
+    # - name: Build Prometheus image
+    #   run: |
+    #     docker build \
+    #       -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }} \
+    #       -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ env.COMMIT_SHA }}\
+    #       ${{ env.PROMETHEUS_DIRECTORY }}
 
   # Job to scan the Prometheus Docker image
   scan-prometheus:
