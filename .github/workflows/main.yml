@@ -68,10 +68,10 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@master
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}
+      id: meta
+      uses: docker/metadata-action@master
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}
     
     - name: Build and push Docker image
         id: build-and-push
