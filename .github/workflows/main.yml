@@ -9,6 +9,7 @@ on:
     branches: [ main, dev ]
     inputs:
       enable-date-commit-versioning:
+        name: 'Enable date and commit versioning'
         description: 'Enable date and commit hash tag'
         required: true
         default: 'false'
