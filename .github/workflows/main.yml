@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
     branches: [ main, dev ]
     inputs:
-      build_type:
-        description: 'Boolean to determine if the image should be a date and commit hash tag'
+      enable-date-commit-versioning:
+        description: 'Enable date and commit hash tag'
         required: true
         default: 'false'
         type: boolean
