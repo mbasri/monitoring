@@ -45,7 +45,7 @@ jobs:
       packages: write
       id-token: write # needed for signing the images with GitHub OIDC Token
 
-    needs: [ generate-version]
+    needs: [ generate-version ]
     name: Build Prometheus image
     steps:
     - name: Checkout
@@ -105,7 +105,7 @@ jobs:
       packages: write
       id-token: write # needed for signing the images with GitHub OIDC Token
 
-    needs: [ generate-version]
+    needs: [ generate-version ]
     name: Build Node Exporter image
     steps:
     - name: Checkout
