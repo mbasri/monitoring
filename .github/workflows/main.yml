@@ -53,10 +53,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Build Prometheus Docker image
-      run: docker build \
-        -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} \
-        -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} \
-        ${{ env.PROMETHEUS_DIRECTORY }}
+      run: |
+        docker build \
+          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} \
+          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} \
+          ${{ env.PROMETHEUS_DIRECTORY }}
 
   # Job to scan the Prometheus Docker image
   scan-prometheus:
