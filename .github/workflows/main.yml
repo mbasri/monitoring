@@ -80,9 +80,9 @@ jobs:
         context: ${{ env.PROMETHEUS_DIRECTORY }}
         # push: ${{ github.event_name != 'pull_request' }}
         tags: 
-          - ${{ steps.meta.outputs.tags }}
-          - ${{ env.COMMIT_SHA }}
-          - ${{ needs.generate-version.outputs.version }}
+        - ${{ steps.meta.outputs.tags }}
+        - ${{ env.COMMIT_SHA }}
+        - ${{ needs.generate-version.outputs.version }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
