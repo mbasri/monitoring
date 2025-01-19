@@ -35,7 +35,7 @@ jobs:
   generate-commit-version:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.versio,n.outputs.version }}
+      version: ${{ steps.version.outputs.version }}
     steps:
     - name: Generate commit version
       id: version
