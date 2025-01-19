@@ -11,6 +11,10 @@ env:
 jobs:
   purge-prometheus-registry:
     runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+
     name: Purge Prometheus registry
     outputs:
       version: ${{ steps.version.outputs.version }}
@@ -25,16 +29,20 @@ jobs:
         delete-only-untagged-versions: 'true'
 
   purge-node-exporter-registry:
-      runs-on: ubuntu-latest
-      name: Purge Node Exporter registry
-      outputs:
-        version: ${{ steps.version.outputs.version }}
-      steps:
-      - uses: actions/delete-package-versions@main
-        with: 
-          #package-name: '${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}'
-          package-name: 'node-exporter'
-          package-type: 'container'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: 'true'
+    runs-on: ubuntu-latest
+    
+    permissions:
+      packages: write
+
+    name: Purge Node Exporter registry
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+    - uses: actions/delete-package-versions@main
+      with: 
+        #package-name: '${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}'
+        package-name: 'node-exporter'
+        package-type: 'container'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-versions-to-keep: 0
+        delete-only-untagged-versions: 'true'
