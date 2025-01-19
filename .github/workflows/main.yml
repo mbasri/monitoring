@@ -81,8 +81,8 @@ jobs:
         push: true
         tags: |
           ${{ steps.meta.outputs.tags }}
-          ${{ env.COMMIT_SHA }}
-          ${{ needs.generate-version.outputs.version }}
+          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ env.COMMIT_SHA }}
+          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
