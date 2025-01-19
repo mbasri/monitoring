@@ -2,6 +2,11 @@ name: 'Purge registry'
 
 on:
   workflow_dispatch:
+
+env:
+  REGISTRY: 'ghcr.io'
+  PROMETHEUS_IMAGE_NAME: 'mbasri/prometheus'
+  NODE_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
   
 jobs:
   purge-prometheus-registry:
@@ -10,9 +15,9 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
-    - uses: actions/delete-package-versions@v5
+    - uses: actions/delete-package-versions@main
       with: 
-        package-name: 'mbasri/prometheus'
+        package-name: '${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}'
         package-type: 'container'
         min-versions-to-keep: 0
         delete-only-untagged-versions: 'true'
@@ -23,9 +28,9 @@ jobs:
       outputs:
         version: ${{ steps.version.outputs.version }}
       steps:
-      - uses: actions/delete-package-versions@v5
+      - uses: actions/delete-package-versions@main
         with: 
-          package-name: 'mbasri/node-exporter'
+          package-name: '${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}'
           package-type: 'container'
           min-versions-to-keep: 0
           delete-only-untagged-versions: 'true'
