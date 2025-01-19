@@ -1,4 +1,4 @@
-name: 'Build, Scan & Publish Docker image'
+name: 'Purge registry'
 
 on:
   workflow_dispatch:
