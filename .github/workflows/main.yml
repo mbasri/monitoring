@@ -14,7 +14,7 @@ on:
     #     default: ''
     # ${{ github.event.inputs.description }}
 env:
-  CONTAINER_REGISTRY: 'ghcr.io'
+  CONTAINERs_REGISTRY: 'ghcr.io'
   
   LATEST_TAG: 'latest'
   
@@ -23,27 +23,24 @@ env:
 
   NODE_EXPORTER_DIRECTORY: 'docker/node-exporter'
   NODE_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
+
+  DATE_VERSION: "$(date +'%Y%m%d%H%M%S')"
+  COMMIT_VERSION: "${{ github.sha }}"
   
 jobs:
   # Job to generate a version based on the current date and time
-  generate-date-version:
+  generate-version:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.version.outputs.version }}
+      date_version: ${{ steps.version.outputs.version }}
+      commit_version: ${{ steps.version.outputs.version }}
     steps:
     - name: Generate date version
       id: version
-      run: echo "version=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
-
-  # Job to generate a version based on the current commit SHA
-  generate-commit-version:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-    steps:
+      run: echo "date_version=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
     - name: Generate commit version
       id: version
-      run: echo "version=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+      run: echo "commit_version=${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
   # Job to build the Prometheus Docker image
   build-prometheus:
@@ -55,8 +52,8 @@ jobs:
     - name: Build Prometheus Docker image
       run: |
         docker build \
-          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} \
-          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-commit-version.outputs.version }} \
+          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.date_version }} \
+          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.commit_version }} \
           ${{ env.PROMETHEUS_DIRECTORY }}
 
   # Job to scan the Prometheus Docker image
@@ -85,8 +82,8 @@ jobs:
     - name: Build Node Exporter Docker image
       run: |
           docker build \
-            -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} \
-            -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-commit-version.outputs.version }} \
+            -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.date_version }} \
+            -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.commit_version }} \
             ${{ env.NODE_EXPORTER_DIRECTORY }}
 
   # Job to scan the Node Exporter Docker image
