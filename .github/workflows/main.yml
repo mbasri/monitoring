@@ -25,7 +25,6 @@ env:
   NODE_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
 
   DATE_VERSION: "$(date +'%Y%m%d%H%M%S')"
-  COMMIT_VERSION: "${{ github.sha }}"
   
 jobs:
   # Job to generate a version based on the current date and time
@@ -33,14 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       date_version: ${{ steps.date-version.outputs.version }}
-      commit_version: ${{ steps.commit-version.outputs.version }}
     steps:
     - name: Generate date version
       id: date-version
       run: echo "date_version=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
-    - name: Generate commit version
-      id: commit-version
-      run: echo "commit_version=${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
   # Job to build the Prometheus Docker image
   build-prometheus:
@@ -53,7 +48,7 @@ jobs:
       run: |
         docker build \
           -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.date_version }} \
-          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.commit_version }} \
+          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ github.sha }}\
           ${{ env.PROMETHEUS_DIRECTORY }}
 
   # Job to scan the Prometheus Docker image
@@ -83,7 +78,7 @@ jobs:
       run: |
           docker build \
             -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.date_version }} \
-            -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.commit_version }} \
+            -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ github.sha }} \
             ${{ env.NODE_EXPORTER_DIRECTORY }}
 
   # Job to scan the Node Exporter Docker image
