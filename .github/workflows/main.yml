@@ -88,13 +88,6 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
     
-    # - name: Build Prometheus image
-    #   run: |
-    #     docker build \
-    #       -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }} \
-    #       -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ env.COMMIT_SHA }}\
-    #       ${{ env.PROMETHEUS_DIRECTORY }}
-
   # Job to scan the Prometheus Docker image
   scan-prometheus:
     runs-on: ubuntu-latest
@@ -103,15 +96,6 @@ jobs:
     steps:
     - name: Scan Prometheus image
       run: echo "scan-prometheus"
-
-  # Job to publish the Prometheus Docker image
-  publish-prometheus:
-    runs-on: ubuntu-latest
-    needs: [scan-prometheus]
-    name: Publish Prometheus image
-    steps:
-    - name: Publish Prometheus image
-      run: echo "publish-prometheus"
 
   # Job to build the Node Exporter Docker image
   build-node-exporter:
@@ -137,12 +121,3 @@ jobs:
     steps:
     - name: Scan Node Exporter image
       run: echo "scan-node-exporter"
-
-  # Job to publish the Node Exporter Docker image
-  publish-node-exporter:
-    runs-on: ubuntu-latest
-    needs: [scan-node-exporter]
-    name: Publish Node Exporter image
-    steps:
-    - name: Publish Node Exporter image
-      run: echo "publish-node-exporter"
