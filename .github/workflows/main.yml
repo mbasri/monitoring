@@ -1,4 +1,4 @@
-name: Main
+name: 'Build, Scan & Publish Docker image'
 
 on:
   push:
@@ -12,9 +12,16 @@ on:
         description: 'Description of the build'
         required: true
         default: ''
+env:
+  CONTAINER_REGISTRY: 'ghcr.io'
+  LATEST_TAG: 'latest'
+  PROMETHEUS_DIRECTORY: 'docker/prometheus'
+  NODE_EXPORTER_DIRECTORY: 'docker/node-exporter'
+  
+  
 
 jobs:
-  build:
+  'Build Promethus':
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
