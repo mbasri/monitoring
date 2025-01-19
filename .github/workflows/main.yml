@@ -14,9 +14,7 @@ on:
     #     default: ''
     # ${{ github.event.inputs.description }}
 env:
-  CONTAINERs_REGISTRY: 'ghcr.io'
-  
-  LATEST_TAG: 'latest'
+  REGISTRY: 'ghcr.io'
   
   PROMETHEUS_DIRECTORY: 'docker/prometheus'
   PROMETHEUS_IMAGE_NAME: 'mbasri/prometheus'
@@ -61,6 +59,19 @@ jobs:
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@master
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@master
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@master
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}
     
     - name: Build Prometheus image
       run: |
