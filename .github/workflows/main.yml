@@ -44,6 +44,7 @@ jobs:
       contents: read
       packages: write
       id-token: write # needed for signing the images with GitHub OIDC Token
+      actions: write # needed for pushing to GitHub Container Registry
 
     needs: [ generate-version]
     name: Build Prometheus image
