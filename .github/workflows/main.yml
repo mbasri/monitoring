@@ -22,7 +22,7 @@ env:
   PROMETHEUS_IMAGE_NAME: 'mbasri/prometheus'
 
   NODE_EXPORTER_DIRECTORY: 'docker/node-exporter'
-  Node_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
+  NODE_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
   
 jobs:
   # Job to generate a version based on the current date and time
@@ -81,9 +81,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Build Node Exporter Docker image
-      run: docker build -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} ${{ env.PROMETHEUS_DIRECTORY }}
+      run: docker build -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} ${{ env.NODE_EXPORTER_DIRECTORY }}
     - name: Tag Node Exporter Docker image with commit version
-      run: docker tag ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-commit-version.outputs.version }}
+      run: docker tag ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-commit-version.outputs.version }}
 
   # Job to scan the Node Exporter Docker image
   scan-node-exporter:
