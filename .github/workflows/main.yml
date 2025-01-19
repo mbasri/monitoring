@@ -30,6 +30,7 @@ jobs:
   # Job to generate a version based on the current date and time
   generate-version:
     runs-on: ubuntu-latest
+    name: Generate version
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
@@ -40,7 +41,14 @@ jobs:
   # Job to build the Prometheus Docker image
   build-prometheus:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write # needed for signing the images with GitHub OIDC Token
+
     needs: [ generate-version]
+    name: Build Prometheus Docker image
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -55,6 +63,7 @@ jobs:
   scan-prometheus:
     runs-on: ubuntu-latest
     needs: [build-prometheus]
+    name: Scan Prometheus Docker image
     steps:
     - name: Scan Prometheus Docker image
       run: echo "scan-prometheus"
@@ -63,6 +72,7 @@ jobs:
   publish-prometheus:
     runs-on: ubuntu-latest
     needs: [scan-prometheus]
+    name: Publish Prometheus Docker image
     steps:
     - name: Publish Prometheus Docker image
       run: echo "publish-prometheus"
@@ -71,6 +81,7 @@ jobs:
   build-node-exporter:
     runs-on: ubuntu-latest
     needs: [ generate-version]
+    name: Build Node Exporter Docker image
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -85,6 +96,7 @@ jobs:
   scan-node-exporter:
     runs-on: ubuntu-latest
     needs: [build-node-exporter]
+    name: Scan Node Exporter Docker image
     steps:
     - name: Scan Node Exporter Docker image
       run: echo "scan-node-exporter"
@@ -93,6 +105,7 @@ jobs:
   publish-node-exporter:
     runs-on: ubuntu-latest
     needs: [scan-node-exporter]
+    name: Publish Node Exporter Docker image
     steps:
     - name: Publish Node Exporter Docker image
       run: echo "publish-node-exporter"
