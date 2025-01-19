@@ -21,8 +21,16 @@ env:
   
 
 jobs:
+  generate-version:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Genen=rate Version
+      id: version
+      run: echo "date +'%Y%m%d%H%M%S'"
+
   build-prometheus:
     runs-on: ubuntu-latest
+    needs: [generate-version]
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -45,6 +53,7 @@ jobs:
 
   build-node-exporter:
     runs-on: ubuntu-latest
+    needs: [generate-version]
     steps:
     - name: Checkout
       uses: actions/checkout@v4
