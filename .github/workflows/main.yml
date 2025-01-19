@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Generate commit version
-      run: echo "${github.sha}"
+      run: echo "${{ github.sha }}"
 
   build-prometheus:
     runs-on: ubuntu-latest
