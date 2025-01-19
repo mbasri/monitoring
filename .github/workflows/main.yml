@@ -32,13 +32,13 @@ jobs:
       run: echo ${{ github.event.inputs.description }}
   scan-prometheus:
     runs-on: ubuntu-latest
-    neads: [build-prometheus]
+    needs: [build-prometheus]
     steps:
     - name: Scan Promethues
       run: echo "scan-prometheus"
   publish-prometheus:
     runs-on: ubuntu-latest
-    neads: [scan-prometheus]
+    needs: [scan-prometheus]
     steps:
     - name: Publish Prometheus
       run: echo "publish-prometheus"
@@ -52,13 +52,13 @@ jobs:
       run: echo "build-node-exporter"
   scan-node-exporter:
     runs-on: ubuntu-latest
-    neads: [build-node-exporter]
+    needs: [build-node-exporter]
     steps:
     - name: Scan Promethues
       run: echo "scan-node-exporter"
   publish-node-exporter:
     runs-on: ubuntu-latest
-    neads: [scan-node-exporter]
+    needs: [scan-node-exporter]
     steps:
     - name: Publish Node Exporter
       run: echo "publish-node-exporter"
