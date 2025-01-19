@@ -31,11 +31,11 @@ jobs:
   generate-version:
     runs-on: ubuntu-latest
     outputs:
-      date_version: ${{ steps.date-version.outputs.version }}
+      version: ${{ steps.version.outputs.version }}
     steps:
     - name: Generate date version
-      id: date-version
-      run: echo "date_version=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
+      id: version
+      run: echo "version=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
 
   # Job to build the Prometheus Docker image
   build-prometheus:
@@ -47,7 +47,7 @@ jobs:
     - name: Build Prometheus Docker image
       run: |
         docker build \
-          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.date_version }} \
+          -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }} \
           -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ github.sha }}\
           ${{ env.PROMETHEUS_DIRECTORY }}
 
@@ -77,7 +77,7 @@ jobs:
     - name: Build Node Exporter Docker image
       run: |
           docker build \
-            -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.date_version }} \
+            -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }} \
             -t ${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ github.sha }} \
             ${{ env.NODE_EXPORTER_DIRECTORY }}
 
