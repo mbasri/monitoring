@@ -23,8 +23,6 @@ env:
 
   NODE_EXPORTER_DIRECTORY: 'docker/node-exporter'
   NODE_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
-
-  DATE_VERSION: "$(date +'%Y%m%d%H%M%S')"
   
 jobs:
   # Job to generate a version based on the current date and time
