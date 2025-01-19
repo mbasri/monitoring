@@ -1,4 +1,4 @@
-name: Main
+name: 'Build, Scan & Publish Docker image'
 
 on:
   push:
@@ -6,13 +6,143 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-    #branches: [ main, dev ]
+    branches: [ main, dev ]
+    # inputs:
+    #   description:
+    #     description: 'Description of the build'
+    #     required: true
+    #     default: ''
+    # ${{ github.event.inputs.description }}
+env:
+  REGISTRY: 'ghcr.io'
+  
+  PROMETHEUS_DIRECTORY: 'docker/prometheus'
+  PROMETHEUS_IMAGE_NAME: 'mbasri/prometheus'
 
+  NODE_EXPORTER_DIRECTORY: 'docker/node-exporter'
+  NODE_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
+
+  COMMIT_SHA: ${{ github.sha }}
+  
 jobs:
-  build:
+  # Job to generate a version based on the current date and time
+  generate-version:
     runs-on: ubuntu-latest
+    name: Generate version
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+    - name: Generate date version
+      id: version
+      run: echo "version=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
+
+  # Job to build the Prometheus Docker image
+  build-prometheus:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write # needed for signing the images with GitHub OIDC Token
+
+    needs: [ generate-version ]
+    name: Build Prometheus image
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Build
-      run: echo "Build"
+    
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@main
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@master
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@master
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@master
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@master
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}
+    
+    - name: Build and push Docker image
+      id: build-and-push
+      uses: docker/build-push-action@master
+      with:
+        context: ${{ env.PROMETHEUS_DIRECTORY }}
+        push: true
+        tags: |
+          ${{ steps.meta.outputs.tags }}
+          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ env.COMMIT_SHA }}
+          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+    
+  # # Job to scan the Prometheus Docker image
+  # scan-prometheus:
+  #   runs-on: ubuntu-latest
+  #   needs: [build-prometheus]
+  #   name: Scan Prometheus image
+  #   steps:
+  #   - name: Scan Prometheus image
+  #     run: echo "scan-prometheus"
+
+  # Job to build the Node Exporter Docker image
+  build-node-exporter:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write # needed for signing the images with GitHub OIDC Token
+
+    needs: [ generate-version ]
+    name: Build Node Exporter image
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@main
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@master
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@master
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@master
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@master
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}
+    
+    - name: Build and push Docker image
+      id: build-and-push
+      uses: docker/build-push-action@master
+      with:
+        context: ${{ env.NODE_EXPORTER_DIRECTORY }}
+        push: true
+        tags: |
+          ${{ steps.meta.outputs.tags }}
+          ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ env.COMMIT_SHA }}
+          ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
