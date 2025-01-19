@@ -32,14 +32,14 @@ jobs:
   generate-version:
     runs-on: ubuntu-latest
     outputs:
-      date_version: ${{ steps.version.outputs.version }}
-      commit_version: ${{ steps.version.outputs.version }}
+      date_version: ${{ steps.date-version.outputs.version }}
+      commit_version: ${{ steps.commit-version.outputs.version }}
     steps:
     - name: Generate date version
-      id: version
+      id: date-version
       run: echo "date_version=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
     - name: Generate commit version
-      id: version
+      id: commit-version
       run: echo "commit_version=${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
   # Job to build the Prometheus Docker image
