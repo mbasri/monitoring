@@ -26,7 +26,7 @@ jobs:
     steps:
     - name: Genen=rate Version
       id: version
-      run: echo "date +'%Y%m%d%H%M%S'"
+      run: echo "$(date +'%Y%m%d%H%M%S')"
 
   build-prometheus:
     runs-on: ubuntu-latest
