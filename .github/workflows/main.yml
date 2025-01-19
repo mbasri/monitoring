@@ -53,9 +53,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Build Prometheus Docker image
-      run: docker build -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} ${{ env.PROMETHEUS_DIRECTORY }}
-    - name: Tag Prometheus Docker image with commit version
-      run: docker tag ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-commit-version.outputs.version }}
+      run: docker build \
+        -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} \
+        -t ${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-date-version.outputs.version }} \
+        ${{ env.PROMETHEUS_DIRECTORY }}
 
   # Job to scan the Prometheus Docker image
   scan-prometheus:
