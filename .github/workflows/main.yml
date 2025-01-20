@@ -95,7 +95,7 @@ jobs:
       run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
       
     - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@vmaster
+      uses: aquasecurity/trivy-action@master
       with:
         scan-type: image
         image-ref: ${{ steps.build-and-push.outputs.image }}
@@ -173,7 +173,7 @@ jobs:
       run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
     - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@vmaster
+      uses: aquasecurity/trivy-action@master
       with:
         scan-type: image
         image-ref: ${{ steps.build-and-push.outputs.image }}
