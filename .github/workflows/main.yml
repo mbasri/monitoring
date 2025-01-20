@@ -177,7 +177,7 @@ jobs:
       uses: aquasecurity/trivy-action@master
       with:
         scan-type: image
-        image-ref: ${{ steps.build-and-push.outputs.image }}
+        image-ref: ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
         format: table
         exit-code: 0
         ignore-unfixed: true
