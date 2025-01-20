@@ -17,7 +17,7 @@ on:
 env:
   REGISTRY: 'ghcr.io'
   
-  PROMETHEUS_DIRECTORY: 'docker/prometheus'
+  PROMETHEUS_DIRECTORY: 'docker/prometheus' 
   PROMETHEUS_IMAGE_NAME: 'mbasri/prometheus'
 
   NODE_EXPORTER_DIRECTORY: 'docker/node-exporter'
