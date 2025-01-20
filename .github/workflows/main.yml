@@ -107,7 +107,7 @@ jobs:
 
   scan-exporter:
     runs-on: ubuntu-latest
-    needs: [build-prometheus]
+    needs: [  generate-version, build-prometheus ]
     name: Scan Prometheus image
     steps:
     - name: Run Trivy vulnerability scanner
@@ -188,7 +188,7 @@ jobs:
 
   scan-node-exporter:
     runs-on: ubuntu-latest
-    needs: [build-node-exporter]
+    needs: [ generate-version, build-node-exporter ]
     name: Scan Node Exporter image
     steps:
     - name: Run Trivy vulnerability scanner
