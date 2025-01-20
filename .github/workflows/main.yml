@@ -93,6 +93,15 @@ jobs:
       # This step uses the identity token to provision an ephemeral certificate
       # against the sigstore community Fulcio instance.
       run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@vmaster
+      with:
+        scan-type: image
+        image-ref: ${{ steps.build-and-push.outputs.image }}
+        format: table
+        exit-code: 0
+        ignore-unfixed: true
     
   # # Job to scan the Prometheus Docker image
   # scan-prometheus:
@@ -162,3 +171,12 @@ jobs:
       # This step uses the identity token to provision an ephemeral certificate
       # against the sigstore community Fulcio instance.
       run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@vmaster
+      with:
+        scan-type: image
+        image-ref: ${{ steps.build-and-push.outputs.image }}
+        format: table
+        exit-code: 0
+        ignore-unfixed: true
