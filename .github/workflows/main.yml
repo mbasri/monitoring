@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
     branches: [ main, dev ]
     inputs:
-      enable-date-commit-versioning:
-        description: 'Enable date and commit hash tag'
+      enable-date-versioning:
+        description: 'Enable date tag'
         required: true
         default: 'false'
         type: boolean
