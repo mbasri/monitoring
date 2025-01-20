@@ -115,7 +115,8 @@ jobs:
       with:
         scan-type: image
         image-ref: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
-        format: table
+        output: trivy-report-prometheus.json
+        format: json
         exit-code: 0
         ignore-unfixed: true
 
