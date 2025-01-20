@@ -7,11 +7,12 @@ on:
     branches: [ main ]
   workflow_dispatch:
     branches: [ main, dev ]
-    # inputs:
-    #   description:
-    #     description: 'Description of the build'
-    #     required: true
-    #     default: ''
+    inputs:
+      enable-date-commit-versioning:
+        description: 'Enable date and commit hash tag'
+        required: true
+        default: 'false'
+        type: boolean
     # ${{ github.event.inputs.description }}
 env:
   REGISTRY: 'ghcr.io'
@@ -21,8 +22,6 @@ env:
 
   NODE_EXPORTER_DIRECTORY: 'docker/node-exporter'
   NODE_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
-
-  COMMIT_SHA: ${{ github.sha }}
   
 jobs:
   # Job to generate a version based on the current date and time
@@ -81,7 +80,6 @@ jobs:
         push: true
         tags: |
           ${{ steps.meta.outputs.tags }}
-          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ env.COMMIT_SHA }}
           ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
@@ -141,7 +139,6 @@ jobs:
         push: true
         tags: |
           ${{ steps.meta.outputs.tags }}
-          ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ env.COMMIT_SHA }}
           ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha

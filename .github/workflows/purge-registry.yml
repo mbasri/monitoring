@@ -1,31 +1,50 @@
 name: 'Purge registry'
 
 on:
+  schedule:
+    - cron: '0 0 * * *'
   workflow_dispatch:
+
+env:
+  REGISTRY: 'ghcr.io'
+  PROMETHEUS_PACKAGE_NAME: 'prometheus'
+  NODE_EXPORTER_PACKAGE_NAME: 'node-exporter'
   
 jobs:
   purge-prometheus-registry:
     runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+
     name: Purge Prometheus registry
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
     - uses: actions/delete-package-versions@main
       with: 
-        package-name: 'mbasri/prometheus'
+        #package-name: '${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}'
+        package-name: ${{ env.PROMETHEUS_PACKAGE_NAME }}
         package-type: 'container'
-        min-versions-to-keep: 0
-        delete-only-untagged-versions: 'true'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-versions-to-keep: 1
+        delete-only-untagged-versions: false
 
   purge-node-exporter-registry:
-      runs-on: ubuntu-latest
-      name: Purge Node Exporter registry
-      outputs:
-        version: ${{ steps.version.outputs.version }}
-      steps:
-      - uses: actions/delete-package-versions@main
-        with: 
-          package-name: 'mbasri/node-exporter'
-          package-type: 'container'
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: 'true'
+    runs-on: ubuntu-latest
+    
+    permissions:
+      packages: write
+
+    name: Purge Node Exporter registry
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+    - uses: actions/delete-package-versions@main
+      with: 
+        #package-name: '${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}'
+        package-name: ${{ env.NODE_EXPORTER_PACKAGE_NAME }}
+        package-type: 'container'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-versions-to-keep: 1
+        delete-only-untagged-versions: false
