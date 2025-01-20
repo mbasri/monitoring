@@ -145,7 +145,7 @@ jobs:
       uses: docker/build-push-action@master
       with:
         context: ${{ env.NODE_EXPORTER_DIRECTORY }}
-        push: true
+        push: ${{ github.event_name != 'pull_request' }}
         tags: |
           ${{ steps.meta.outputs.tags }}
           ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
@@ -154,7 +154,7 @@ jobs:
         cache-to: type=gha,mode=max
 
     - name: Sign the published Docker image
-      # if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' }}
       env:
         # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
         TAGS: ${{ steps.meta.outputs.tags }}
