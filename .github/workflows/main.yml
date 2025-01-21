@@ -72,8 +72,8 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}
         labels: |
-          org.opencontainers.image.description="Prometheus is an open-source systems monitoring and alerting toolkit"
-          org.opencontainers.image.licenses="MIT"
+          org.opencontainers.image.description=Prometheus is an open-source systems monitoring and alerting toolkit
+          org.opencontainers.image.licenses=MIT
     
     - name: Build and push Docker image
       id: build-and-push
