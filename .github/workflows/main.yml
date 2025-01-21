@@ -80,8 +80,9 @@ jobs:
       uses: docker/build-push-action@master
       with:
         context: ${{ env.PROMETHEUS_DIRECTORY }}
-        #platforms: linux/amd64,linux/arm64
         push: true
+        provenance: false
+        platforms: linux/amd64,linux/arm64
         tags: |
           ${{ steps.meta.outputs.tags }}
           ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
@@ -180,7 +181,8 @@ jobs:
       with:
         context: ${{ env.NODE_EXPORTER_DIRECTORY }}
         push: ${{ github.event_name != 'pull_request' }}
-        #platforms: linux/amd64,linux/arm64
+        provenance: false
+        platforms: linux/amd64,linux/arm64
         tags: |
           ${{ steps.meta.outputs.tags }}
           ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
