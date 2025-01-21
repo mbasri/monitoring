@@ -71,7 +71,7 @@ jobs:
       uses: docker/metadata-action@master
       with:
         images: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}
-        annotations: |
+        labels: |
           org.opencontainers.image.description=Prometheus is an open-source systems monitoring and alerting toolkit
           org.opencontainers.image.licenses=MIT
     
@@ -160,7 +160,7 @@ jobs:
       uses: docker/metadata-action@master
       with:
         images: ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}
-        annotations: |
+        labels: |
           org.opencontainers.image.description="Prometheus Node Exporter is a Prometheus exporter for hardware and OS metrics exposed by *NIX kernels, written in Go with pluggable metric collectors"
           org.opencontainers.image.licenses="MIT"
     
