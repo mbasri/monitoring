@@ -71,22 +71,22 @@ jobs:
       uses: docker/metadata-action@master
       with:
         images: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}
-        annotations: |
-          org.opencontainers.image.description=Prometheus is an open-source systems monitoring and alerting toolkit
-          org.opencontainers.image.licenses=MIT
-    
+
     - name: Build and push Docker image
       id: build-and-push
       uses: docker/build-push-action@master
       with:
         context: ${{ env.PROMETHEUS_DIRECTORY }}
-        push: true
+        push: ${{ github.event_name != 'pull_request' }}
         provenance: false
         platforms: linux/amd64,linux/arm64
         tags: |
           ${{ steps.meta.outputs.tags }}
           ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
-        annotations: ${{ steps.meta.outputs.annotations }}
+        annotations: |
+          ${{ steps.meta.outputs.annotations }}
+          org.opencontainers.image.description=Prometheus is an open-source systems monitoring and alerting toolkit
+          org.opencontainers.image.licenses=MIT
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -160,10 +160,7 @@ jobs:
       uses: docker/metadata-action@master
       with:
         images: ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}
-        annotations: |
-          org.opencontainers.image.description="Prometheus Node Exporter is a Prometheus exporter for hardware and OS metrics exposed by *NIX kernels, written in Go with pluggable metric collectors"
-          org.opencontainers.image.licenses="MIT"
-    
+
     - name: Build and push Docker image
       id: build-and-push
       uses: docker/build-push-action@master
@@ -175,7 +172,10 @@ jobs:
         tags: |
           ${{ steps.meta.outputs.tags }}
           ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
-        annotations: ${{ steps.meta.outputs.annotations }}
+        annotations: |
+          ${{ steps.meta.outputs.annotations }}
+          org.opencontainers.image.description="Prometheus Node Exporter is a Prometheus exporter for hardware and OS metrics exposed by *NIX kernels, written in Go with pluggable metric collectors"
+          org.opencontainers.image.licenses="MIT"
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
