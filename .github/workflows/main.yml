@@ -90,28 +90,17 @@ jobs:
         # cache-from: type=gha
         # cache-to: type=gha,mode=max
 
-    - name: Sign the published Docker image
-      if: ${{ github.event_name != 'pull_request' }}
-      env:
-        # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-        TAGS: |
-          ${{ steps.meta.outputs.tags }}
-          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
-        DIGEST: ${{ steps.build-and-push.outputs.digest }}
-      # This step uses the identity token to provision an ephemeral certificate
-      # against the sigstore community Fulcio instance.
-      run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-      
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
-        scan-type: image
-        # image-ref: ${{ steps.build-and-push.outputs.image }}
-        image-ref: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
-        output: trivy-report-prometheus.json
-        format: json
-        exit-code: 0
-        ignore-unfixed: true
+    # - name: Sign the published Docker image
+    #   if: ${{ github.event_name != 'pull_request' }}
+    #   env:
+    #     # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+    #     TAGS: |
+    #       ${{ steps.meta.outputs.tags }}
+    #       ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
+    #     DIGEST: ${{ steps.build-and-push.outputs.digest }}
+    #   # This step uses the identity token to provision an ephemeral certificate
+    #   # against the sigstore community Fulcio instance.
+    #   run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
   scan-prometheus:
     runs-on: ubuntu-latest
@@ -190,17 +179,17 @@ jobs:
         # cache-from: type=gha
         # cache-to: type=gha,mode=max
 
-    - name: Sign the published Docker image
-      if: ${{ github.event_name != 'pull_request' }}
-      env:
-        # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-        TAGS: |
-          ${{ steps.meta.outputs.tags }}
-          ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
-        DIGEST: ${{ steps.build-and-push.outputs.digest }}
-      # This step uses the identity token to provision an ephemeral certificate
-      # against the sigstore community Fulcio instance.
-      run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+    # - name: Sign the published Docker image
+    #   if: ${{ github.event_name != 'pull_request' }}
+    #   env:
+    #     # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+    #     TAGS: |
+    #       ${{ steps.meta.outputs.tags }}
+    #       ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
+    #     DIGEST: ${{ steps.build-and-push.outputs.digest }}
+    #   # This step uses the identity token to provision an ephemeral certificate
+    #   # against the sigstore community Fulcio instance.
+    #   run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
   scan-node-exporter:
     runs-on: ubuntu-latest
