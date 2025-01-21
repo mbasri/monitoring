@@ -161,6 +161,11 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}
 
+    - name: Log annotations
+      run: |
+        echo "Annotations: ${{ steps.meta.outputs.annotations }}"
+      
+
     - name: Build and push Docker image
       id: build-and-push
       uses: docker/build-push-action@master
