@@ -15,7 +15,6 @@ on:
         type: boolean
     # ${{ github.event.inputs.description }}
 env:
-  REGISTRY: 'ghcr.io'
   
   PROMETHEUS_DIRECTORY: 'docker/prometheus' 
   PROMETHEUS_IMAGE_NAME: 'mbasri/prometheus'
@@ -62,20 +61,7 @@ jobs:
     needs: [ generate-version, build-prometheus ]
     name: Scan Prometheus image
     steps:
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
+    - uses: mbasri-actions/docker-scan@dev
       with:
-        scan-type: image
-        image-ref: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
-        output: trivy-report-prometheus.json
-        format: json
-        exit-code: 0
-        ignore-unfixed: true
-
-    - name: Upload Vulnerability Scan Results
-      uses: actions/upload-artifact@main
-      with:
-        name: trivy-report-prometheus
-        path: trivy-report-prometheus.json
-        retention-days: 30
+        image-ref: ghcr.io/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
 
