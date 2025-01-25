@@ -55,6 +55,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         docker-directory: ${{ env.PROMETHEUS_DIRECTORY }}
         image-name: ${{ env.PROMETHEUS_IMAGE_NAME }}
+        tags: ${{ needs.generate-version.outputs.version }}
 
   scan-prometheus:
     runs-on: ubuntu-latest
@@ -64,4 +65,3 @@ jobs:
     - uses: mbasri-actions/docker-scan@dev
       with:
         image-ref: ghcr.io/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
-
