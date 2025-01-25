@@ -52,7 +52,9 @@ jobs:
     
     - name: Build, Push and Sign Docker Image
       uses: mbasri-actions/dockerize@dev
-
+      with:
+        docker_directory: ${{ env.PROMETHEUS_DIRECTORY }}
+        image_name: ${{ env.PROMETHEUS_IMAGE_NAME }}
 
   scan-prometheus:
     runs-on: ubuntu-latest
