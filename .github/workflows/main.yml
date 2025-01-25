@@ -54,8 +54,8 @@ jobs:
       uses: mbasri-actions/dockerize@dev
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        docker_directory: ${{ env.PROMETHEUS_DIRECTORY }}
-        image_name: ${{ env.PROMETHEUS_IMAGE_NAME }}
+        docker-directory: ${{ env.PROMETHEUS_DIRECTORY }}
+        image-name: ${{ env.PROMETHEUS_IMAGE_NAME }}
 
   scan-prometheus:
     runs-on: ubuntu-latest
