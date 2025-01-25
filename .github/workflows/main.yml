@@ -53,6 +53,7 @@ jobs:
     - name: Build, Push and Sign Docker Image
       uses: mbasri-actions/dockerize@dev
       with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         docker_directory: ${{ env.PROMETHEUS_DIRECTORY }}
         image_name: ${{ env.PROMETHEUS_IMAGE_NAME }}
 
