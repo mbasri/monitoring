@@ -50,8 +50,6 @@ jobs:
         image-name: ${{ env.PROMETHEUS_IMAGE_NAME }}
         tags: |
           ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
-          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:test1
-          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:test2
 
   scan-prometheus:
     runs-on: ubuntu-latest
