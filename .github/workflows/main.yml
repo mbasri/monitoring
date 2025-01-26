@@ -55,10 +55,11 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         docker-directory: ${{ env.PROMETHEUS_DIRECTORY }}
         image-name: ${{ env.PROMETHEUS_IMAGE_NAME }}
-        tags: |
-          test1
-          ${{ needs.generate-version.outputs.version }}
-          test2
+        tags: ${{ needs.generate-version.outputs.version }}
+        # |
+        #   test1
+        #   ${{ needs.generate-version.outputs.version }}
+        #   test2
 
   scan-prometheus:
     runs-on: ubuntu-latest
