@@ -1,4 +1,4 @@
-name: 'Build, Scan & Publish Docker image'
+name: 'Build, Scan, Publish & Sign Docker image'
 
 on:
   push:
@@ -6,16 +6,11 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-    branches: [ main, dev ]
-    inputs:
-      enable-date-versioning:
-        description: 'Enable date tag'
-        required: true
-        default: 'false'
-        type: boolean
-    # ${{ github.event.inputs.description }}
+    branches: [ * ]
+
 env:
-  
+  REGISTRY: 'ghcr.io'
+
   PROMETHEUS_DIRECTORY: 'docker/prometheus' 
   PROMETHEUS_IMAGE_NAME: 'mbasri/prometheus'
 
@@ -23,7 +18,6 @@ env:
   NODE_EXPORTER_IMAGE_NAME: 'mbasri/node-exporter'
   
 jobs:
-  # Job to generate a version based on the current date and time
   generate-version:
     runs-on: ubuntu-latest
     name: Generate version
@@ -34,14 +28,13 @@ jobs:
       id: version
       run: echo "version=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
 
-  # Job to build the Prometheus Docker image
   build-prometheus:
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
       packages: write
-      id-token: write # needed for signing the images with GitHub OIDC Token
+      id-token: write
 
     needs: [ generate-version ]
     name: Build Prometheus image
@@ -55,11 +48,10 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         docker-directory: ${{ env.PROMETHEUS_DIRECTORY }}
         image-name: ${{ env.PROMETHEUS_IMAGE_NAME }}
-        tags: ${{ needs.generate-version.outputs.version }}
-        # |
-        #   test1
-        #   ${{ needs.generate-version.outputs.version }}
-        #   test2
+        tags: |
+          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
+          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:test1
+          ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:test2
 
   scan-prometheus:
     runs-on: ubuntu-latest
@@ -68,4 +60,4 @@ jobs:
     steps:
     - uses: mbasri-actions/docker-scan@dev
       with:
-        image-ref: ghcr.io/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
+        image-ref: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
