@@ -2,22 +2,11 @@
 
 [![Build, Scan & Publish Docker image](https://github.com/mbasri/monitoring/actions/workflows/main.yml/badge.svg)](https://github.com/mbasri/monitoring/actions/workflows/main.yml)
 
-**Prometheus**
-
-![Prometheus Docker Pulls](https://img.shields.io/docker/pulls/mbasri/prometheus.svg)
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/mbasri/prometheus)
-
-**Node Exporter**
-
-![Docker Pulls](https://img.shields.io/docker/pulls/mbasri/node-exporter.svg)
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/mbasri/node-exporter)
-
 **Docker images to run the Monitoring Stack.**
 
-> * Docker base images:
->
->   * [https://hub.docker.com/r/prom/prometheus](https://hub.docker.com/r/prom/prometheus)
->   * [https://hub.docker.com/r/prom/node-exporter](https://hub.docker.com/r/prom/node-exporter)
+> Docker base images:
+> * [https://hub.docker.com/r/prom/prometheus](https://hub.docker.com/r/prom/prometheus)
+> * [https://hub.docker.com/r/prom/node-exporter](https://hub.docker.com/r/prom/node-exporter)
 
 ## Prerequisites
 
@@ -25,7 +14,7 @@
 
 ## Usage
 
-### Build New Images
+### Manual Build
 
 ```bash
 git clone https://github.com/mbasri/monitoring.git monitoring
@@ -35,9 +24,27 @@ cd monitoring/docker
 
 > Ensure the `build` file is executable: `chmod +x ~/monitoring/build`
 
-### Run Manually
+### Github Action
 
-#### Quickstart
+#### Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_actions_checkout"></a> [actions/checkout](https://github.com/actions/checkout) | 4 |
+| <a name="requirement_mbasri_actions_dockerize"></a> [mbasri-actions/dockerize](https://github.com/mbasri-actions/dockerize) | 1.0.0 |
+| <a name="requirement_mbasri_actions_docker_scan"></a> [mbasri-actions/docker-scan](https://github.com/mbasri-actions/docker-scan) | 1.0.0 |
+
+#### Inputs
+
+`No Inputs`
+
+#### Outputs
+
+`No Outputs`
+
+### Quickstart
+
+#### Simple
 
 ```bash
 docker run -p 9090:9090 ghcr.io/mbasri/prometheus:latest
@@ -65,11 +72,11 @@ docker-compose up -d
 
 ### Backup
 
-//TODO
+`N/A`
 
 ### Restore
 
-//TODO
+`N/A`
 
 ## Volumes
 
