@@ -36,11 +36,11 @@ cd monitoring/docker
 
 #### Inputs
 
-`No Inputs.`
+`No Inputs`
 
 #### Outputs
 
-`No Outputs.`
+`No Outputs`
 
 ### Quickstart
 
