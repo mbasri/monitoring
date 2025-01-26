@@ -59,3 +59,36 @@ jobs:
     - uses: mbasri-actions/docker-scan@dev
       with:
         image-ref: ${{ env.REGISTRY }}/${{ env.PROMETHEUS_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
+
+  build-node-exporter:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    needs: [ generate-version ]
+    name: Build Node Exporter image
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Build, Push and Sign Docker Image
+      uses: mbasri-actions/dockerize@dev
+      with:
+        registry: ${{ env.REGISTRY }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        docker-directory: ${{ env.NODE_EXPORTER_DIRECTORY }}
+        image-name: ${{ env.NODE_EXPORTER_IMAGE_NAME }}
+        tags: |
+          ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
+
+  scan-node-exporter:
+    runs-on: ubuntu-latest
+    needs: [ generate-version, build-node-exporter ]
+    name: Scan Node Exporter image
+    steps:
+    - uses: mbasri-actions/docker-scan@dev
+      with:
+        image-ref: ${{ env.REGISTRY }}/${{ env.NODE_EXPORTER_IMAGE_NAME }}:${{ needs.generate-version.outputs.version }}
